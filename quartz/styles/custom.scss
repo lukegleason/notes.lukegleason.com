@@ -1,3 +1,190 @@
+
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+/* ==========================================
+   LUKE'S NOTES — CUSTOM STYLES
+   ========================================== */
+
+$accent: #D75B32;
+$ink: #1b1b1b;
+$muted: #888888;
+$border: #dedede;
+
+
+/* ==========================================
+   1. HOMEPAGE TITLE
+   ========================================== */
+
+/* Massive NOTES. title — homepage only */
+body[data-slug="index"] #quartz-root
+h1.article-title {
+  font-size: clamp(5rem, 15vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -0.085em;
+  line-height: 0.85;
+  margin: 0 0 3rem 0;
+}
+
+/* Normal titles on individual notes */
+body:not([data-slug="index"]) #quartz-root
+h1.article-title {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+
+/* ==========================================
+   2. RECENT NOTES — HOMEPAGE ONLY
+   ========================================== */
+
+/* Hide Recent Notes on individual pages */
+body:not([data-slug="index"]) #quartz-root
+.recent-notes {
+  display: none !important;
+}
+
+/* Show Recent Notes on homepage */
+body[data-slug="index"] #quartz-root
+.recent-notes {
+  display: block !important;
+}
+
+
+/* ==========================================
+   3. RECENT NOTES — EXPERIMENTAL INDEX
+   ========================================== */
+
+.recent-notes {
+  margin-top: 2.5rem;
+  margin-bottom: 3rem;
+
+  /* Section heading */
+  > h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0 0 1rem 0;
+
+    // &::before {
+    //   content: "[01] ";
+    //   margin-right: 0.4rem;
+    // }
+  }
+
+  /* Notes list */
+  ul.recent-ul {
+    list-style: none;
+    counter-reset: recent;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Individual note row */
+  li.recent-li {
+    counter-increment: recent;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 1.15rem 0;
+    margin: 0;
+    border-bottom: 1px solid $border;
+
+    &:first-child {
+      border-top: 1px solid $border;
+    }
+
+    /* Automatic row numbers */
+    &::before {
+      content: counter(recent, decimal-leading-zero);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      color: $accent;
+    }
+
+    /* Title and date layout */
+    .section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .desc h3 {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.25;
+    }
+
+    /* Note links */
+    .desc a {
+      color: $ink;
+      text-decoration: none;
+      background: none;
+      transition: color 150ms ease;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+
+    /* Dates */
+    .meta {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.7rem;
+      color: $muted;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* Hide empty tag lists */
+    ul.tags:empty {
+      display: none;
+    }
+  }
+}
+
+
+/* ==========================================
+   4. FOOTER
+   ========================================== */
+
+/* Hide leftover footer divider */
+#quartz-root .center > hr {
+  display: none;
+}
+
+
+/* ==========================================
+   5. MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+  .recent-notes li.recent-li {
+    .section {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+    }
+
+    .desc h3 {
+      font-size: 1rem;
+    }
+  }
+}
+
+
+/* ==========================================
+   HIDE 404 FROM RECENT ACTIVITY
+   ========================================== */
+
+.recent-notes li.recent-li:has(a[href="./404"]) {
+  display: none !important;
+}
